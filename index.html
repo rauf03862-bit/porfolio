@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Modern Portfolio</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- AOS Animation -->
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:'Poppins',sans-serif;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      background:#0b1020;
+      color:white;
+      overflow-x:hidden;
+    }
+
+    /* ================= SCROLLBAR ================= */
+
+    ::-webkit-scrollbar{
+      width:10px;
+    }
+
+    ::-webkit-scrollbar-track{
+      background:#111827;
+    }
+
+    ::-webkit-scrollbar-thumb{
+      background:linear-gradient(#a855f7,#ec4899);
+      border-radius:20px;
+    }
+
+    /* ================= NAVBAR ================= */
+
+    .navbar{
+      background:rgba(10,10,25,0.7);
+      backdrop-filter:blur(18px);
+      padding:18px 0;
+      border-bottom:1px solid rgba(255,255,255,0.08);
+      box-shadow:0 5px 20px rgba(0,0,0,0.3);
+    }
+
+    .navbar-brand{
+      font-size:32px;
+      font-weight:800;
+      color:white !important;
+    }
+
+    .navbar-brand span{
+      color:#c084fc;
+    }
+
+    .nav-link{
+      color:#f8fafc !important;
+      margin:0 12px;
+      position:relative;
+      transition:0.4s;
+      font-weight:500;
+    }
+
+    .nav-link:hover{
+      color:#c084fc !important;
+    }
+
+    .nav-link::after{
+      content:'';
+      position:absolute;
+      width:0%;
+      height:2px;
+      background:linear-gradient(to right,#c084fc,#ec4899);
+      left:0;
+      bottom:-5px;
+      transition:0.4s;
+    }
+
+    .nav-link:hover::after{
+      width:100%;
+    }
+
+    .navbar-toggler{
+      background:white;
+      border:none;
+      border-radius:10px;
+      padding:8px 12px;
+    }
+
+    /* ================= HERO ================= */
+
+    .hero{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      padding:120px 0 80px;
+      position:relative;
+    }
+
+    .hero::before{
+      content:'';
+      position:absolute;
+      width:350px;
+      height:350px;
+      background:#a855f7;
+      filter:blur(180px);
+      top:-100px;
+      right:-100px;
+      opacity:0.4;
+      z-index:-1;
+    }
+
+    .hero::after{
+      content:'';
+      position:absolute;
+      width:300px;
+      height:300px;
+      background:#ec4899;
+      filter:blur(180px);
+      bottom:-100px;
+      left:-100px;
+      opacity:0.3;
+      z-index:-1;
+    }
+
+    .hero h1{
+      font-size:75px;
+      line-height:90px;
+      font-weight:800;
+    }
+
+    .hero h1 span{
+      background:linear-gradient(to right,#c084fc,#ec4899);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+
+    .hero p{
+      color:#cbd5e1;
+      line-height:32px;
+      margin-top:20px;
+      font-size:18px;
+    }
+
+    .btn-custom{
+      padding:15px 35px;
+      border:none;
+      border-radius:50px;
+      background:linear-gradient(135deg,#a855f7,#ec4899);
+      color:white;
+      font-weight:600;
+      margin-top:25px;
+      transition:0.4s;
+      box-shadow:0 10px 30px rgba(168,85,247,0.4);
+    }
+
+    .btn-custom:hover{
+      transform:translateY(-5px) scale(1.03);
+      box-shadow:0 15px 40px rgba(236,72,153,0.5);
+    }
+
+    .hero-img{
+      text-align:center;
+    }
+
+    .hero-img img{
+      width:100%;
+      max-width:500px;
+      animation:float 4s ease-in-out infinite;
+      filter:drop-shadow(0 15px 30px rgba(168,85,247,0.5));
+    }
+
+    @keyframes float{
+
+      0%{
+        transform:translateY(0px);
+      }
+
+      50%{
+        transform:translateY(-20px);
+      }
+
+      100%{
+        transform:translateY(0px);
+      }
+
+    }
+
+    /* ================= SECTION TITLE ================= */
+
+    .section-title{
+      text-align:center;
+      margin-bottom:70px;
+    }
+
+    .section-title h2{
+      font-size:50px;
+      font-weight:800;
+    }
+
+    .section-title span{
+      background:linear-gradient(to right,#c084fc,#ec4899);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+
+    /* ================= ABOUT ================= */
+
+    .about{
+      padding:120px 0;
+    }
+
+    .about-img{
+      overflow:hidden;
+      border-radius:25px;
+    }
+
+    .about-img img{
+      width:100%;
+      border-radius:25px;
+      transition:0.5s;
+      border:3px solid rgba(192,132,252,0.2);
+    }
+
+    .about-img:hover img{
+      transform:scale(1.08);
+    }
+
+    .about-text p{
+      color:#d1d5db;
+      line-height:32px;
+      font-size:17px;
+    }
+
+    /* ================= SERVICES ================= */
+
+    .services{
+      padding:120px 0;
+    }
+
+    .service-card{
+      background:rgba(255,255,255,0.04);
+      padding:45px 30px;
+      border-radius:25px;
+      border:1px solid rgba(255,255,255,0.08);
+      transition:0.5s;
+      height:100%;
+      backdrop-filter:blur(12px);
+    }
+
+    .service-card:hover{
+      transform:translateY(-12px);
+      background:linear-gradient(
+      135deg,
+      rgba(168,85,247,0.15),
+      rgba(236,72,153,0.12)
+      );
+      box-shadow:0 15px 40px rgba(168,85,247,0.25);
+    }
+
+    .service-card i{
+      font-size:55px;
+      color:#c084fc;
+      margin-bottom:20px;
+    }
+
+    .service-card h4{
+      margin-bottom:15px;
+      font-weight:700;
+    }
+
+    .service-card p{
+      color:#cbd5e1;
+      line-height:28px;
+    }
+
+    /* ================= PORTFOLIO ================= */
+
+    .portfolio{
+      padding:120px 0;
+    }
+
+    .portfolio-card{
+      overflow:hidden;
+      border-radius:25px;
+      position:relative;
+      box-shadow:0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .portfolio-card img{
+      width:100%;
+      transition:0.5s;
+    }
+
+    .portfolio-card:hover img{
+      transform:scale(1.1);
+    }
+
+    .portfolio-overlay{
+      position:absolute;
+      inset:0;
+      background:linear-gradient(
+      to top,
+      rgba(10,10,30,0.95),
+      rgba(168,85,247,0.2)
+      );
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      opacity:0;
+      transition:0.5s;
+    }
+
+    .portfolio-card:hover .portfolio-overlay{
+      opacity:1;
+    }
+
+    .portfolio-overlay h4{
+      font-size:24px;
+      font-weight:700;
+    }
+
+    /* ================= CONTACT ================= */
+
+    .contact{
+      padding:120px 0;
+    }
+
+    .contact form{
+      background:rgba(255,255,255,0.04);
+      padding:40px;
+      border-radius:25px;
+      border:1px solid rgba(255,255,255,0.08);
+      backdrop-filter:blur(15px);
+      box-shadow:0 10px 35px rgba(0,0,0,0.3);
+    }
+
+    .form-control{
+      background:rgba(255,255,255,0.06);
+      border:none;
+      padding:16px;
+      border-radius:15px;
+      color:white;
+      margin-bottom:20px;
+    }
+
+    .form-control::placeholder{
+      color:#cbd5e1;
+    }
+
+    .form-control:focus{
+      background:rgba(255,255,255,0.09);
+      border:1px solid #c084fc;
+      box-shadow:0 0 15px rgba(192,132,252,0.3);
+      color:white;
+    }
+
+    /* ================= FOOTER ================= */
+
+    footer{
+      text-align:center;
+      padding:25px;
+      border-top:1px solid rgba(255,255,255,0.08);
+      color:#cbd5e1;
+      background:#09090f;
+    }
+
+    /* ================= RESPONSIVE ================= */
+
+    @media(max-width:991px){
+
+      .hero{
+        text-align:center;
+      }
+
+      .hero h1{
+        font-size:50px;
+        line-height:65px;
+      }
+
+      .hero-img{
+        margin-top:50px;
+      }
+
+      .navbar-collapse{
+        background:#0f172a;
+        padding:20px;
+        border-radius:20px;
+        margin-top:15px;
+      }
+
+    }
+
+    @media(max-width:768px){
+
+      .hero h1{
+        font-size:42px;
+        line-height:55px;
+      }
+
+      .section-title h2{
+        font-size:38px;
+      }
+
+    }
+
+    @media(max-width:576px){
+
+      .hero h1{
+        font-size:34px;
+        line-height:45px;
+      }
+
+      .hero p{
+        font-size:16px;
+      }
+
+      .btn-custom{
+        width:100%;
+      }
+
+      .section-title h2{
+        font-size:32px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <!-- ================= NAVBAR ================= -->
+
+  <nav class="navbar navbar-expand-lg fixed-top">
+
+    <div class="container">
+
+      <a class="navbar-brand" href="#">
+        Rauf<span>.</span>
+      </a>
+
+      <button class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav">
+
+        <span class="navbar-toggler-icon"></span>
+
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+
+        <ul class="navbar-nav ms-auto">
+
+          <li class="nav-item">
+            <a class="nav-link" href="#home">Home</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="#about">About</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="#services">Services</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="#portfolio">Portfolio</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="#contact">Contact</a>
+          </li>
+
+        </ul>
+
+      </div>
+
+    </div>
+
+  </nav>
+
+  <!-- ================= HERO ================= -->
+
+  <section class="hero" id="home">
+
+    <div class="container">
+
+      <div class="row align-items-center">
+
+        <div class="col-lg-6" data-aos="fade-right">
+
+          <h1>
+            Hi, I'm <span>Rauf</span><br>
+            Frontend Developer
+          </h1>
+
+          <p>
+            I create modern responsive websites with smooth animation,
+            creative UI and mobile friendly design.
+          </p>
+
+          <button class="btn-custom">
+            Hire Me
+          </button>
+
+        </div>
+
+        <div class="col-lg-6 hero-img" data-aos="fade-left">
+
+          <img src="1.jpg" alt="">
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ================= ABOUT ================= -->
+
+  <section class="about" id="about">
+
+    <div class="container">
+
+      <div class="section-title" data-aos="fade-up">
+
+        <h2>About <span>Me</span></h2>
+
+      </div>
+
+      <div class="row align-items-center">
+
+        <div class="col-lg-6" data-aos="zoom-in">
+
+          <div class="about-img">
+
+            <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1000&auto=format&fit=crop"
+              alt="">
+
+          </div>
+
+        </div>
+
+        <div class="col-lg-6 mt-4 mt-lg-0 about-text"
+          data-aos="fade-left">
+
+          <p>
+            I am a passionate frontend developer who loves building
+            modern websites with beautiful user interfaces.
+          </p>
+
+          <p>
+            I work with HTML, CSS, Bootstrap and JavaScript
+            to create modern responsive experiences.
+          </p>
+
+          <button class="btn-custom">
+            Download CV
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ================= SERVICES ================= -->
+
+  <section class="services" id="services">
+
+    <div class="container">
+
+      <div class="section-title" data-aos="fade-up">
+
+        <h2>My <span>Services</span></h2>
+
+      </div>
+
+      <div class="row g-4">
+
+        <div class="col-md-6 col-lg-4"
+          data-aos="zoom-in">
+
+          <div class="service-card">
+
+            <i class="bi bi-code-slash"></i>
+
+            <h4>Web Development</h4>
+
+            <p>
+              Modern responsive websites with clean code.
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="col-md-6 col-lg-4"
+          data-aos="zoom-in"
+          data-aos-delay="200">
+
+          <div class="service-card">
+
+            <i class="bi bi-phone"></i>
+
+            <h4>Responsive Design</h4>
+
+            <p>
+              Fully responsive layouts for all devices.
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="col-md-6 col-lg-4"
+          data-aos="zoom-in"
+          data-aos-delay="400">
+
+          <div class="service-card">
+
+            <i class="bi bi-palette"></i>
+
+            <h4>Creative UI/UX</h4>
+
+            <p>
+              Beautiful modern interfaces with smooth experience.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ================= PORTFOLIO ================= -->
+
+  <section class="portfolio" id="portfolio">
+
+    <div class="container">
+
+      <div class="section-title" data-aos="fade-up">
+
+        <h2>My <span>Work</span></h2>
+
+      </div>
+
+      <div class="row g-4">
+
+        <div class="col-md-6 col-lg-4"
+          data-aos="flip-left">
+
+          <div class="portfolio-card">
+
+            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop"
+              alt="">
+
+            <div class="portfolio-overlay">
+
+              <h4>Web Design</h4>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="col-md-6 col-lg-4"
+          data-aos="flip-left"
+          data-aos-delay="200">
+
+          <div class="portfolio-card">
+
+            <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1000&auto=format&fit=crop"
+              alt="">
+
+            <div class="portfolio-overlay">
+
+              <h4>Frontend Project</h4>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="col-md-6 col-lg-4"
+          data-aos="flip-left"
+          data-aos-delay="400">
+
+          <div class="portfolio-card">
+
+            <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000&auto=format&fit=crop"
+              alt="">
+
+            <div class="portfolio-overlay">
+
+              <h4>Creative UI</h4>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ================= CONTACT ================= -->
+
+  <section class="contact" id="contact">
+
+    <div class="container">
+
+      <div class="section-title" data-aos="fade-up">
+
+        <h2>Contact <span>Me</span></h2>
+
+      </div>
+
+      <div class="row justify-content-center">
+
+        <div class="col-lg-8"
+          data-aos="zoom-in">
+
+          <form>
+
+            <input type="text"
+              class="form-control"
+              placeholder="Your Name">
+
+            <input type="email"
+              class="form-control"
+              placeholder="Your Email">
+
+            <textarea rows="5"
+              class="form-control"
+              placeholder="Your Message"></textarea>
+
+            <button class="btn-custom">
+              Send Message
+            </button>
+
+          </form>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+
+  <footer>
+
+    © 2026 Rauf Portfolio | All Rights Reserved
+
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- AOS Animation -->
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+  <script>
+
+    AOS.init({
+      duration:1000,
+      once:true
+    });
+
+  </script>
+
+</body>
+
+</html>
